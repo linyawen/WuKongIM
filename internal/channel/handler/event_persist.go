@@ -29,6 +29,7 @@ func (h *Handler) persist(ctx *eventbus.ChannelContext) {
 		defer cancel()
 		reasonCode := wkproto.ReasonSuccess
 		results, err := service.Store.AppendMessages(timeoutCtx, ctx.ChannelId, ctx.ChannelType, persists)
+		_, _ = service.AStore.AppendMessages(timeoutCtx, ctx.ChannelId, ctx.ChannelType, persists)
 		if err != nil {
 			h.Error("store message failed", zap.Error(err), zap.Int("events", len(persists)), zap.String("fakeChannelId", ctx.ChannelId), zap.Uint8("channelType", ctx.ChannelType))
 			reasonCode = wkproto.ReasonSystemError
