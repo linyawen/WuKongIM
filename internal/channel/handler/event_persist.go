@@ -29,6 +29,7 @@ func (h *Handler) persist(ctx *eventbus.ChannelContext) {
 		defer cancel()
 		reasonCode := wkproto.ReasonSuccess
 		results, err := service.Store.AppendMessages(timeoutCtx, ctx.ChannelId, ctx.ChannelType, persists)
+		//TODO(xxx) 1.去掉pebble时，改用这里的返回值 2.读取配置，看是否执行。3 读取配置，看是否使用生效
 		_, _ = service.AStore.AppendMessages(timeoutCtx, ctx.ChannelId, ctx.ChannelType, persists)
 		if err != nil {
 			h.Error("store message failed", zap.Error(err), zap.Int("events", len(persists)), zap.String("fakeChannelId", ctx.ChannelId), zap.Uint8("channelType", ctx.ChannelType))
